@@ -11,11 +11,19 @@
     <name>Catalan Numbers</name>
 
     <dependencies>
+
         <dependency>
             <groupId>org.joda</groupId>
             <artifactId>joda-money</artifactId>
             <version>0.8</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.scilab.forge</groupId>
+            <artifactId>jlatexmath</artifactId>
+            <version>0.9.6</version>
+        </dependency>
+
     </dependencies>
 
     <build>
