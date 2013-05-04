@@ -33,22 +33,28 @@ public class CatalanNumberGenerator {
 
         generator.generateCatalanNumbers(99, "target/outputfile.txt");
 
+        generator.saveLatexAsPng("\\frac{(2n)!}{(n+1)!n!}", "target/catalan-common-formula.png");
+
         for (int i = 1; i <= 14; i++) {
             final String math = "\\frac{(2\\cdot" + i + ")!}{(" + i + "+1)!" + i + "!}" +
                                 " = " +
                                 generator.generateFormula(i);
 
-            final TeXFormula formula = new TeXFormula(math);
-            final TeXIcon ti = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY, 40);
-            final BufferedImage b = new BufferedImage(ti.getIconWidth(), ti.getIconHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-            ti.paintIcon(new JLabel(), b.getGraphics(), 0, 0);
-
-            final File file = new File("target/catalan " + i + ".png");
-            ImageIO.write(b, "png", file);
+            generator.saveLatexAsPng(math, "target/catalan " + i + ".png");
         }
     }
 
-    private String fact(long n) {
+    private void saveLatexAsPng(final String math, final String pathToFile) throws IOException {
+        final TeXFormula formula = new TeXFormula(math);
+        final TeXIcon ti = formula.createTeXIcon(TeXConstants.STYLE_TEXT, 400);
+        final BufferedImage b = new BufferedImage(ti.getIconWidth(), ti.getIconHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+        ti.paintIcon(new JLabel(), b.getGraphics(), 0, 0);
+
+        final File file = new File(pathToFile);
+        ImageIO.write(b, "png", file);
+    }
+
+    private String fact(final long n) {
         if (facts.containsKey(n)) {
             return facts.get(n);
         }
@@ -64,7 +70,7 @@ public class CatalanNumberGenerator {
         return "\\frac{(" + fact(2*n) +")}{(" + fact(n + 1) +")\\cdot(" + fact(n) + ")}";
     }
 
-    private BigMoney catalan(long n) {
+    private BigMoney catalan(final long n) {
         if (!catsR2.containsKey(n)) {
             final BigMoney previousCatalan = catalan(n - 1);
             final BigMoney catalan = previousCatalan.multipliedBy(2).multipliedBy((2 * (n - 1) + 1)).dividedBy(n + 1, RoundingMode.FLOOR);
